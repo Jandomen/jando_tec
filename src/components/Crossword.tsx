@@ -97,36 +97,38 @@ export default function Crossword() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row gap-8 items-start justify-center p-4 relative">
-      <div className="box-simple rounded-lg">
-        <div className="grid grid-cols-11 gap-1">
+    <div className="flex flex-col lg:flex-row gap-4 md:gap-8 items-start justify-center p-2 md:p-4 w-full mx-auto max-w-[100vw] overflow-x-hidden">
+      <div className="box-simple p-2 md:p-6 rounded-lg w-full max-w-[340px] md:max-w-none mx-auto">
+        <div className="grid grid-cols-11 gap-0.5 md:gap-1">
           {Array.from({ length: GRID_SIZE }).map((_, r) => (
             Array.from({ length: GRID_SIZE }).map((_, c) => {
               const isCell = grid[r][c] !== '';
               const clueNumber = CLUES.find(cl => cl.row === r && cl.col === c)?.number;
               
               return (
-                <div key={`${r}-${c}`} className="relative w-8 h-8 md:w-12 md:h-12">
+                <div key={`${r}-${c}`} className="relative aspect-square w-full">
                   {isCell ? (
                     <>
                       {clueNumber && (
-                        <span className="absolute top-0.5 left-1 text-[8px] md:text-[10px] text-gray-400 z-10 pointer-events-none">
+                        <span className="absolute top-0.5 left-0.5 text-[6px] md:text-[10px] text-gray-500 z-10 pointer-events-none leading-none">
                           {clueNumber}
                         </span>
                       )}
                       <input
                         id={`cell-${r}-${c}`}
                         type="text"
+                        spellCheck="false"
+                        autoComplete="off"
                         value={userGrid[r][c]}
                         onChange={(e) => handleChange(r, c, e.target.value)}
                         onKeyDown={(e) => handleKeyDown(r, c, e)}
-                        className={`w-full h-full text-center text-lg md:text-xl font-medium uppercase crossword-cell
+                        className={`w-full h-full text-center text-xs md:text-xl font-medium uppercase crossword-cell p-0
                           ${cellStatus[r][c] === 'correct' ? 'bg-green-50' : 
                             cellStatus[r][c] === 'incorrect' ? 'bg-red-50' : ''}`}
                       />
                     </>
                   ) : (
-                    <div className="w-full h-full bg-gray-200 rounded-sm" />
+                    <div className="w-full h-full bg-gray-100 rounded-sm" />
                   )}
                 </div>
               );
@@ -134,38 +136,38 @@ export default function Crossword() {
           ))}
         </div>
         
-        <div className="mt-8 flex justify-center no-print">
+        <div className="mt-6 flex justify-center no-print">
           <button 
             onClick={checkAnswers}
-            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md transition-colors"
+            className="w-full md:w-auto px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-sm active:scale-95"
           >
             Verificar Respuestas
           </button>
         </div>
       </div>
 
-      <div className="w-full lg:w-96 flex flex-col gap-6">
-        <div className="box-simple rounded-lg">
-          <h2 className="text-lg font-semibold mb-4 border-b border-gray-200 pb-2">
+      <div className="w-full lg:w-96 flex flex-col gap-4 md:gap-6">
+        <div className="box-simple p-4 md:p-6 rounded-lg">
+          <h2 className="text-base md:text-lg font-semibold mb-3 border-b border-gray-200 pb-2">
             Horizontales
           </h2>
-          <ul className="space-y-3">
+          <ul className="space-y-2 md:space-y-3">
             {CLUES.filter(c => c.direction === 'across').map(clue => (
-              <li key={clue.number} className="text-sm text-gray-700">
-                <span className="font-bold mr-2">{clue.number}.</span> {clue.clue}
+              <li key={clue.number} className="text-xs md:text-sm text-gray-700 leading-tight">
+                <span className="font-bold mr-1.5">{clue.number}.</span> {clue.clue}
               </li>
             ))}
           </ul>
         </div>
 
-        <div className="box-simple rounded-lg">
-          <h2 className="text-lg font-semibold mb-4 border-b border-gray-200 pb-2">
+        <div className="box-simple p-4 md:p-6 rounded-lg">
+          <h2 className="text-base md:text-lg font-semibold mb-3 border-b border-gray-200 pb-2">
             Verticales
           </h2>
-          <ul className="space-y-3">
+          <ul className="space-y-2 md:space-y-3">
             {CLUES.filter(c => c.direction === 'down').map(clue => (
-              <li key={clue.number} className="text-sm text-gray-700">
-                <span className="font-bold mr-2">{clue.number}.</span> {clue.clue}
+              <li key={clue.number} className="text-xs md:text-sm text-gray-700 leading-tight">
+                <span className="font-bold mr-1.5">{clue.number}.</span> {clue.clue}
               </li>
             ))}
           </ul>
